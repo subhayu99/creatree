@@ -15,18 +15,22 @@ Example:
 """
 
 import os
+from pathlib import Path
 import sys
 import argparse
 
 from creatree.core import creatree
 
 
+def format_paths(paths: list[Path]):
+    return "'" + "', '".join(map(lambda x: x.absolute().as_posix(), paths)) + "'"
+
 def creatree_cli(tree_string: str, where: str = "."):
     # Create the directory tree
     tree_dict = creatree(tree_string, where)
     roots = list(tree_dict.keys())
 
-    print(f"Created tree{'s' if len(roots) > 1 else ''} in {', '.join(roots)}")
+    print(f"Created tree{'s' if len(roots) > 1 else ''} in {', '.join(format_paths(roots))}")
 
 
 def main():
