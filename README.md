@@ -110,16 +110,6 @@ While there are other tools available for scaffolding projects, `creatree` offer
 - Supports nested directory structures with file placeholders.
 - Lightweight and easy to use.
 
-## Future Roadmap
-
-We have exciting plans to enhance `creatree` further:
-
-- **Template Support**: Allow users to define reusable templates for common project structures.
-- **Customization Options**: Enable customization of file contents during creation.
-- **Integration with Popular Frameworks**: Provide predefined structures for popular frameworks and libraries.
-
-Stay tuned for these updates!
-
 ## How to Contribute
 
 We welcome contributions from the community! Here's how you can get involved:
@@ -129,7 +119,7 @@ We welcome contributions from the community! Here's how you can get involved:
 2. **Clone the Forked Repository**: On your local machine, clone the forked repository using:
 
    ```bash
-   git clone https://github.com/yourusername/creatree.git
+   git clone https://github.com/[yourusername]/creatree.git
    cd creatree
    ```
 
