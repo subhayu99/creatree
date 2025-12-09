@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "creatree"
-version = "0.1.1"
+version = "0.1.4"
 requires-python = ">= 3.10"
 authors = [
     {name = "Subhayu Kumar Bala", email = "balasubhayu99@gmail.com"}
