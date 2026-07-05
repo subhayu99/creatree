@@ -30,3 +30,11 @@ classifiers = [
 
 [project.scripts]
 creatree = "creatree.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["creatree*"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
