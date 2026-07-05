@@ -3,3 +3,4 @@
 dist
 BetterPassphrase.egg-info
 **.ipynb
+.plan-url

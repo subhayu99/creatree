@@ -1,0 +1,388 @@
+<DesignBoard id="creatree-desktop-board">
+
+<Artboard id="create-main" label="Create — the whole app in one screen" x={0} y={0}>
+  <Screen surface="desktop" html={`<div style="display:flex;flex-direction:column;height:100%;box-sizing:border-box">
+  <div style="display:flex;align-items:center;gap:8px;width:100%;padding:10px 16px;border-bottom:1.4px solid var(--wf-line);white-space:nowrap">
+    <strong>Creatree</strong>
+    <div style="flex:1"></div>
+    <span class="wf-pill accent">Create</span>
+    <span class="wf-pill">Rename</span>
+    <span class="wf-pill">Templates</span>
+    <div style="flex:1"></div>
+    <span data-icon="settings" aria-label="Settings"></span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;flex:1;min-height:0">
+    <div style="display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-right:1.4px solid var(--wf-line)">
+      <div style="display:flex;align-items:center;white-space:nowrap">
+        <small class="wf-muted">Type your folders. Tab puts one inside another.</small>
+        <div style="flex:1"></div>
+        <button>Ask AI</button>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px;padding:12px;border:1.4px solid var(--wf-line);border-radius:var(--wf-radius)">
+        <div>wedding-shoot</div>
+        <div style="padding-left:24px">raw-photos</div>
+        <div style="padding-left:24px">edited</div>
+        <div style="padding-left:48px">previews</div>
+        <div style="padding-left:48px">final</div>
+        <div style="padding-left:24px">contracts</div>
+        <div style="padding-left:24px">shot-list.docx</div>
+        <div style="padding-left:24px">invoice.docx</div>
+        <div style="padding-left:24px">notes.txt</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;padding:14px 16px">
+      <small class="wf-muted">Preview — 6 folders, 3 files</small>
+      <div class="wf-card" style="flex:1;display:flex;flex-direction:column;gap:6px">
+        <div><strong>wedding-shoot/</strong></div>
+        <div style="padding-left:24px"><strong>raw-photos/</strong></div>
+        <div style="padding-left:24px"><strong>edited/</strong></div>
+        <div style="padding-left:48px"><strong>previews/</strong></div>
+        <div style="padding-left:48px"><strong>final/</strong></div>
+        <div style="padding-left:24px"><strong>contracts/</strong></div>
+        <div style="padding-left:24px">shot-list.docx</div>
+        <div style="padding-left:24px">invoice.docx</div>
+        <div style="padding-left:24px">notes.txt</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;width:100%;padding:12px 16px;border-top:1.4px solid var(--wf-line);white-space:nowrap">
+    <small class="wf-muted">Create in</small>
+    <span class="wf-pill">~/Projects</span>
+    <button>Choose…</button>
+    <div style="flex:1"></div>
+    <button class="primary">Create 9 items</button>
+  </div>
+</div>`} />
+</Artboard>
+
+<Annotation id="note-create" targetId="create-main" placement="left" text="One window, three tabs. Type on the left, the preview updates live on the right. No menus, no setup, no jargon anywhere in the copy." />
+
+<Artboard id="create-ai" label="Create — Ask AI state" x={1400} y={0}>
+  <Screen surface="desktop" html={`<div style="display:flex;flex-direction:column;height:100%;box-sizing:border-box">
+  <div style="display:flex;align-items:center;gap:8px;width:100%;padding:10px 16px;border-bottom:1.4px solid var(--wf-line);white-space:nowrap">
+    <strong>Creatree</strong>
+    <div style="flex:1"></div>
+    <span class="wf-pill accent">Create</span>
+    <span class="wf-pill">Rename</span>
+    <span class="wf-pill">Templates</span>
+    <div style="flex:1"></div>
+    <span data-icon="settings" aria-label="Settings"></span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;flex:1;min-height:0">
+    <div style="display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-right:1.4px solid var(--wf-line)">
+      <div class="wf-card" style="display:flex;gap:8px;align-items:center">
+        <input value="a tidy folder setup for a wedding photo project" style="flex:1" />
+        <button class="primary">Generate</button>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px;padding:12px;border:1.4px solid var(--wf-line);border-radius:var(--wf-radius)">
+        <div>wedding-shoot</div>
+        <div style="padding-left:24px">raw-photos</div>
+        <div style="padding-left:24px">edited</div>
+        <div style="padding-left:48px">previews</div>
+        <div style="padding-left:48px">final</div>
+        <div style="padding-left:24px">contracts</div>
+        <div style="padding-left:24px">shot-list.docx</div>
+        <div style="padding-left:24px">invoice.docx</div>
+        <div style="padding-left:24px">notes.txt</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;padding:14px 16px">
+      <small class="wf-muted">Preview — 6 folders, 3 files</small>
+      <div class="wf-card" style="flex:1;display:flex;flex-direction:column;gap:6px">
+        <div><strong>wedding-shoot/</strong></div>
+        <div style="padding-left:24px"><strong>raw-photos/</strong></div>
+        <div style="padding-left:24px"><strong>edited/</strong></div>
+        <div style="padding-left:48px"><strong>previews/</strong></div>
+        <div style="padding-left:48px"><strong>final/</strong></div>
+        <div style="padding-left:24px"><strong>contracts/</strong></div>
+        <div style="padding-left:24px">shot-list.docx</div>
+        <div style="padding-left:24px">invoice.docx</div>
+        <div style="padding-left:24px">notes.txt</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;width:100%;padding:12px 16px;border-top:1.4px solid var(--wf-line);white-space:nowrap">
+    <small class="wf-muted">Create in</small>
+    <span class="wf-pill">~/Projects</span>
+    <button>Choose…</button>
+    <div style="flex:1"></div>
+    <button class="primary">Create 9 items</button>
+  </div>
+</div>`} />
+</Artboard>
+
+<Annotation id="note-ai" targetId="create-ai" placement="right" text="AI is an assist, not a separate mode. It fills the same editor, and every line stays editable before anything is created. Ships in a later phase; the button slot is reserved from day one." />
+
+<Artboard id="confirm-dialog" label="Confirm — conflicts are explicit" x={0} y={1500}>
+  <Screen surface="panel" html={`<div style="display:flex;flex-direction:column;gap:12px;padding:16px;height:100%;box-sizing:border-box">
+  <h3 style="margin:0">Create 9 items?</h3>
+  <p class="wf-muted" style="margin:0">Into ~/Projects/wedding-shoot</p>
+  <div class="wf-card" style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="wf-pill">6 folders</span>
+      <span class="wf-pill">3 files</span>
+    </div>
+    <div style="border-top:1.4px solid var(--wf-line);padding-top:10px">
+      <strong>2 already exist</strong><br />
+      <small class="wf-muted">contracts, invoice.docx</small>
+    </div>
+    <label style="display:flex;align-items:center;gap:8px"><input type="radio" checked /> Skip them — keep what is there</label>
+    <label style="display:flex;align-items:center;gap:8px"><input type="radio" /> Replace them</label>
+  </div>
+  <div style="flex:1"></div>
+  <div style="display:flex;gap:8px;justify-content:flex-end">
+    <button>Cancel</button>
+    <button class="primary">Create</button>
+  </div>
+</div>`} />
+</Artboard>
+
+<Annotation id="note-confirm" targetId="confirm-dialog" placement="left" text="Nothing is ever overwritten silently. Skip is the default; Replace is an explicit opt-in. The dialog only appears when something clashes — a clean create runs straight through." />
+
+<Artboard id="done-toast" label="Done — always undoable" x={900} y={1500}>
+  <Screen surface="popover" html={`<div style="display:flex;flex-direction:column;gap:10px;padding:14px;box-sizing:border-box">
+  <div style="display:flex;align-items:center;gap:8px;white-space:nowrap">
+    <span data-icon="check" aria-label="Done"></span>
+    <strong>Created 6 folders and 3 files</strong>
+  </div>
+  <small class="wf-muted">in ~/Projects/wedding-shoot</small>
+  <div style="display:flex;gap:8px">
+    <button>Open folder</button>
+    <button>Undo</button>
+  </div>
+</div>`} />
+</Artboard>
+
+<Annotation id="note-done" targetId="done-toast" placement="right" text="Undo removes only what Creatree just created, from its journal. Files the user already had are never touched by Undo." />
+
+<Artboard id="templates" label="Templates — save and reuse" x={0} y={3000}>
+  <Screen surface="desktop" html={`<div style="display:flex;flex-direction:column;height:100%;box-sizing:border-box">
+  <div style="display:flex;align-items:center;gap:8px;width:100%;padding:10px 16px;border-bottom:1.4px solid var(--wf-line);white-space:nowrap">
+    <strong>Creatree</strong>
+    <div style="flex:1"></div>
+    <span class="wf-pill">Create</span>
+    <span class="wf-pill">Rename</span>
+    <span class="wf-pill accent">Templates</span>
+    <div style="flex:1"></div>
+    <span data-icon="settings" aria-label="Settings"></span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;padding:14px 16px;flex:1;min-height:0">
+    <div style="display:flex;align-items:center;white-space:nowrap">
+      <h3 style="margin:0">Your templates</h3>
+      <div style="flex:1"></div>
+      <button class="primary">Save current as template</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;flex:1">
+      <div class="wf-card" style="display:flex;flex-direction:column;gap:6px">
+        <strong>Wedding shoot</strong>
+        <small class="wf-muted">raw-photos, edited, contracts…</small>
+        <div style="flex:1"></div>
+        <button>Use</button>
+      </div>
+      <div class="wf-card" style="display:flex;flex-direction:column;gap:6px">
+        <strong>Client project</strong>
+        <small class="wf-muted">brief, assets, deliverables…</small>
+        <div style="flex:1"></div>
+        <button>Use</button>
+      </div>
+      <div class="wf-card" style="display:flex;flex-direction:column;gap:6px">
+        <strong>Podcast episode</strong>
+        <small class="wf-muted">recordings, edits, show-notes…</small>
+        <div style="flex:1"></div>
+        <button>Use</button>
+      </div>
+      <div class="wf-card" style="display:flex;flex-direction:column;gap:6px">
+        <strong>YouTube video</strong>
+        <small class="wf-muted">footage, thumbnails, captions…</small>
+        <div style="flex:1"></div>
+        <button>Use</button>
+      </div>
+      <div class="wf-card" style="display:flex;flex-direction:column;gap:6px">
+        <strong>School class</strong>
+        <small class="wf-muted">notes, assignments, exams…</small>
+        <div style="flex:1"></div>
+        <button>Use</button>
+      </div>
+      <div class="wf-card" style="display:flex;flex-direction:column;gap:6px">
+        <strong>Web app starter</strong>
+        <small class="wf-muted">src, public, config…</small>
+        <div style="flex:1"></div>
+        <button>Use</button>
+      </div>
+    </div>
+  </div>
+</div>`} />
+</Artboard>
+
+<Annotation id="note-templates" targetId="templates" placement="left" text="Templates are plain text files in the app data folder — easy to back up and share. A starter pack ships built in; Save current as template captures whatever is in the editor." />
+
+<Artboard id="rename" label="Rename — find and replace across files" x={1400} y={3000}>
+  <Screen surface="desktop" html={`<div style="display:flex;flex-direction:column;height:100%;box-sizing:border-box">
+  <div style="display:flex;align-items:center;gap:8px;width:100%;padding:10px 16px;border-bottom:1.4px solid var(--wf-line);white-space:nowrap">
+    <strong>Creatree</strong>
+    <div style="flex:1"></div>
+    <span class="wf-pill">Create</span>
+    <span class="wf-pill accent">Rename</span>
+    <span class="wf-pill">Templates</span>
+    <div style="flex:1"></div>
+    <span data-icon="settings" aria-label="Settings"></span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;padding:14px 16px;flex:1;min-height:0">
+    <div style="display:flex;align-items:center;gap:8px;white-space:nowrap">
+      <small class="wf-muted">Folder</small>
+      <span class="wf-pill">~/Projects/wedding-shoot/raw-photos</span>
+      <button>Choose…</button>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;white-space:nowrap">
+      <label style="display:flex;align-items:center;gap:6px;flex:1">Find <input value="IMG_" style="flex:1" /></label>
+      <span data-icon="arrowRight" aria-label="becomes"></span>
+      <label style="display:flex;align-items:center;gap:6px;flex:1">Replace with <input value="wedding_" style="flex:1" /></label>
+      <button>Advanced</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;white-space:nowrap">
+      <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" /> Also rename folders</label>
+      <small class="wf-muted">Tip: rename any file in the list yourself — Creatree offers to match the rest.</small>
+    </div>
+    <div class="wf-card" style="flex:1;display:flex;flex-direction:column;gap:0;padding:0">
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1.4px solid var(--wf-line);white-space:nowrap">
+        <input type="checkbox" checked />
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis">IMG_0001.jpg</span>
+        <span data-icon="arrowRight" aria-label="becomes"></span>
+        <strong style="flex:1;overflow:hidden;text-overflow:ellipsis">wedding_0001.jpg</strong>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1.4px solid var(--wf-line);white-space:nowrap">
+        <input type="checkbox" checked />
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis">IMG_0002.jpg</span>
+        <span data-icon="arrowRight" aria-label="becomes"></span>
+        <strong style="flex:1;overflow:hidden;text-overflow:ellipsis">wedding_0002.jpg</strong>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1.4px solid var(--wf-line);white-space:nowrap">
+        <input type="checkbox" checked />
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis">IMG_0003.jpg</span>
+        <span data-icon="arrowRight" aria-label="becomes"></span>
+        <strong style="flex:1;overflow:hidden;text-overflow:ellipsis">wedding_0003.jpg</strong>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1.4px solid var(--wf-line);white-space:nowrap">
+        <input type="checkbox" checked />
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis">IMG_0004.jpg</span>
+        <span data-icon="arrowRight" aria-label="becomes"></span>
+        <strong style="flex:1;overflow:hidden;text-overflow:ellipsis">wedding_0004.jpg</strong>
+      </div>
+      <div style="padding:9px 12px"><small class="wf-muted">…and 38 more</small></div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;width:100%;padding:12px 16px;border-top:1.4px solid var(--wf-line);white-space:nowrap">
+    <small class="wf-muted">42 of 42 selected</small>
+    <div style="flex:1"></div>
+    <button class="primary">Rename 42 items</button>
+  </div>
+</div>`} />
+</Artboard>
+
+<Annotation id="note-rename" targetId="rename" placement="right" text="The plain find-and-replace tier. Rename never runs without this preview, every row can be unticked, and Undo restores the previous names from the journal. Name-only — file contents are never modified. Renaming a row by hand triggers the pattern suggestion (below left); Advanced opens the panel (below right)." />
+
+<Artboard id="rename-example" label="Rename by example — pattern detected" x={0} y={4500}>
+  <Screen surface="desktop" html={`<div style="display:flex;flex-direction:column;height:100%;box-sizing:border-box">
+  <div style="display:flex;align-items:center;gap:8px;width:100%;padding:10px 16px;border-bottom:1.4px solid var(--wf-line);white-space:nowrap">
+    <strong>Creatree</strong>
+    <div style="flex:1"></div>
+    <span class="wf-pill">Create</span>
+    <span class="wf-pill accent">Rename</span>
+    <span class="wf-pill">Templates</span>
+    <div style="flex:1"></div>
+    <span data-icon="settings" aria-label="Settings"></span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:10px;padding:14px 16px;flex:1;min-height:0">
+    <div style="display:flex;align-items:center;gap:8px;white-space:nowrap">
+      <small class="wf-muted">Folder</small>
+      <span class="wf-pill">~/Projects/wedding-shoot/raw-photos</span>
+      <button>Choose…</button>
+    </div>
+    <div class="wf-card" style="flex:1;display:flex;flex-direction:column;gap:0;padding:0">
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1.4px solid var(--wf-line);white-space:nowrap">
+        <span style="flex:1">IMG_0001.JPG</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1.4px solid var(--wf-line);white-space:nowrap">
+        <input value="image_0002.jpg" style="flex:1" />
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1.4px solid var(--wf-line);white-space:nowrap">
+        <span style="flex:1">IMG_0003.JPG</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;white-space:nowrap">
+        <span style="flex:1">IMG_0004.JPG</span>
+      </div>
+    </div>
+    <div class="wf-card" style="display:flex;align-items:center;gap:10px;white-space:nowrap">
+      <span data-icon="edit" aria-label="Pattern found"></span>
+      <div style="flex:1;min-width:0">
+        <strong>41 more files look like IMG_####.JPG</strong><br />
+        <small class="wf-muted">Rename them the same way — image_####.jpg?</small>
+      </div>
+      <button>No thanks</button>
+      <button class="primary">Preview all</button>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;width:100%;padding:12px 16px;border-top:1.4px solid var(--wf-line);white-space:nowrap">
+    <small class="wf-muted">Nothing is renamed until you approve the preview.</small>
+    <div style="flex:1"></div>
+  </div>
+</div>`} />
+</Artboard>
+
+<Annotation id="note-rename-example" targetId="rename-example" placement="left" text="Rename by example: the user renames one file by hand; the engine infers prefix, case, separator, and date-token changes and offers to apply them to matching siblings — always through the same preview. When it is not confident, it stays silent instead of guessing." />
+
+<Artboard id="rename-advanced" label="Advanced panel — progressive disclosure" x={1400} y={4500}>
+  <Screen surface="panel" html={`<div style="display:flex;flex-direction:column;gap:12px;padding:16px;height:100%;box-sizing:border-box">
+  <h3 style="margin:0">Advanced</h3>
+  <div class="wf-card" style="display:flex;flex-direction:column;gap:8px">
+    <small class="wf-muted">Rewrite dates</small>
+    <div style="display:flex;gap:8px;align-items:center;white-space:nowrap">
+      <input value="YYYYMMDD" style="flex:1" />
+      <span data-icon="arrowRight" aria-label="becomes"></span>
+      <input value="YYYY-MM-DD" style="flex:1" />
+    </div>
+  </div>
+  <div class="wf-card" style="display:flex;flex-direction:column;gap:8px">
+    <small class="wf-muted">Numbering</small>
+    <label style="display:flex;align-items:center;gap:8px;white-space:nowrap">Start at <input value="001" style="width:64px" /></label>
+  </div>
+  <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" /> Regex mode (for developers)</label>
+  <div style="flex:1"></div>
+  <div style="display:flex;justify-content:flex-end">
+    <button class="primary">Preview</button>
+  </div>
+</div>`} />
+</Artboard>
+
+<Annotation id="note-rename-advanced" targetId="rename-advanced" placement="right" text="Progressive disclosure: date rewriting and numbering ship at launch; regex mode and further dev tools land later in this same panel. Non-technical users never see it unless they open it." />
+
+<Artboard id="settings-panel" label="Settings — deliberately tiny" x={1800} y={1500}>
+  <Screen surface="panel" html={`<div style="display:flex;flex-direction:column;gap:12px;padding:16px;height:100%;box-sizing:border-box">
+  <h3 style="margin:0">Settings</h3>
+  <div class="wf-card" style="display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;align-items:center;gap:8px;white-space:nowrap">
+      <small class="wf-muted">Create in by default</small>
+      <div style="flex:1"></div>
+      <span class="wf-pill">~/Projects</span>
+      <button>Choose…</button>
+    </div>
+    <div style="border-top:1.4px solid var(--wf-line);padding-top:10px;display:flex;flex-direction:column;gap:6px">
+      <label style="display:flex;align-items:center;gap:6px;white-space:nowrap">AI key <input value="••••••••••••" style="flex:1" /></label>
+      <small class="wf-muted">Kept in your keychain, never in a file.</small>
+    </div>
+  </div>
+  <div style="flex:1"></div>
+  <div style="display:flex;align-items:center;gap:8px;white-space:nowrap">
+    <small class="wf-muted">Version 1.0.0</small>
+    <div style="flex:1"></div>
+    <button>Check for updates</button>
+  </div>
+</div>`} />
+</Artboard>
+
+<Annotation id="note-settings" targetId="settings-panel" placement="right" text="Settings stay deliberately tiny: default folder, the optional AI key (phase 4, stored in the OS keychain), and updates. No preferences maze." />
+
+<Connector id="flow-create-confirm" from="create-main" to="confirm-dialog" label="Create" />
+<Connector id="flow-confirm-done" from="confirm-dialog" to="done-toast" label="Confirm" />
+
+</DesignBoard>

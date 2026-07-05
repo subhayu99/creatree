@@ -1,0 +1,190 @@
+---
+title: "Creatree Desktop — v1 Plan"
+kind: plan
+localOnly: true
+---
+
+### Objective
+
+Build a minimal, clean desktop app on top of the creatree idea: type a plain-text outline of folders and files, watch a live preview, click Create — plus saved templates and a safe bulk-rename tool. The audience is non-technical (photographers, editors, freelancers, students), so every screen must be understandable without documentation. The existing `creatree` Python package stays free on PyPI as the CLI for developers and as the semantics reference for this app.
+
+Done means: a signed macOS build (Windows follows) where a first-time user can create a folder structure from typed text or a template, rename a batch of files with a preview (by find-and-replace, or by renaming one file and accepting the pattern suggestion), and undo either action — verified by the parity test suite, Rust filesystem tests, an end-to-end smoke on a real temp directory, and a manual light/dark pass against the canvas above.
+
+The wireframes above show the whole product: one window, three tabs (Create, Rename, Templates), no menus and no jargon. Every launch decision is settled; what can still bite is in the Risks section.
+
+### Approach
+
+<Callout id="decision-stack" tone="decision">
+
+**Tauri 2 desktop app with the parser ported to TypeScript.** The Python package is not bundled; it remains the free CLI and the source of truth for tree semantics. The TS parser is a separate workspace package so a future web demo can reuse it unchanged.
+
+</Callout>
+
+<Columns id="stack-compare">
+<Column id="stack-tauri" label="Tauri 2 + TS parser (chosen)">
+
+- Small installers, no bundled language runtime.
+- Same parser module powers the app and a future browser demo.
+- Compiled app is a reasonable home for future license-key gating.
+- Cost: the parser must be ported and kept in parity with Python.
+
+</Column>
+<Column id="stack-python" label="Bundle Python (sidecar / PyInstaller)">
+
+- Reuses `creatree` as-is, no port.
+- Ships a Python runtime per platform; larger artifacts.
+- Bundled source is trivially extracted, weak fit for a paid app.
+- No path to a browser demo from the same code.
+
+</Column>
+</Columns>
+
+<Callout id="decision-launch" tone="decision">
+
+**Settled decisions.** The product keeps the **Creatree** brand; the bundle identifier is `com.creatree.desktop`, frozen now. AI generation is **bring-your-own-key**, stored in the OS keychain. The beta is **free and fully unlocked**, but the entitlement layer is wired from phase 1 so the public launch is **paid from day one** — flipping from beta to paid is configuration, not a retrofit. **Rename ships in the first release**, including rename-by-example. The license sells through **Lemon Squeezy** at a provisional **$10 one-time** price — the number is locked when the phase 5 checkout is wired.
+
+</Callout>
+
+<Diagram id="arch-diagram" caption="App architecture, and how the Python package stays the reference.">
+
+```html
+<div class="diagram-panel" style="display:flex;gap:24px;align-items:stretch">
+  <div class="diagram-box" style="flex:2;display:flex;flex-direction:column;gap:10px">
+    <div class="diagram-muted">Creatree Desktop (Tauri 2)</div>
+    <div style="display:flex;gap:10px">
+      <div class="diagram-node" style="flex:1">React UI<br /><small>Create, Rename, Templates screens</small></div>
+      <div class="diagram-node" style="flex:1">packages/parser (TS)<br /><small>text to ParseResult, pure functions</small></div>
+    </div>
+    <div class="diagram-node">Rust commands<br /><small>create_tree, rename_batch, undo_last — every change journaled</small></div>
+    <div class="diagram-node">Filesystem</div>
+  </div>
+  <div class="diagram-box" style="flex:1;display:flex;flex-direction:column;gap:10px">
+    <div class="diagram-muted">Reference (stays on PyPI)</div>
+    <div class="diagram-node">creatree (Python)<br /><small>free CLI, semantics source of truth</small></div>
+    <div class="diagram-node">fixtures/*.json<br /><small>generated from Python, shared parity tests</small></div>
+  </div>
+</div>
+```
+
+</Diagram>
+
+### Contracts frozen before any UI work
+
+The parser contract is the one shape everything depends on — the editor, the preview tree, the Rust commands, and the fixtures. It is written and frozen in phase 0.
+
+<Code
+  id="parser-contract"
+  filename="packages/parser/src/types.ts"
+  language="ts"
+  caption="ParseResult — the frozen contract between editor, preview, and Rust commands."
+  code={`export type NodeKind = "dir" | "file";
+
+export interface TreeNode {
+  name: string;            // "invoice.docx"
+  kind: NodeKind;          // trailing "/" or has children => dir, else file
+  comment?: string;        // trailing "# note" captured from the line
+  children: TreeNode[];
+}
+
+export interface ParseResult {
+  roots: TreeNode[];
+  counts: { dirs: number; files: number };
+  errors: { line: number; message: string }[]; // parser never throws
+}`}
+/>
+
+The parser accepts both input styles: plain indentation (tabs or spaces — what a non-technical user types) and tree-glyph output (`├──`, `└──`, the `PREFIXES` list ported from `creatree/config.py`), so pasting the output of the `tree` command or an AI chat answer just works. The two styles have different fixture sources: the Python package only nests glyph-prefixed lines — a plain-indented line falls through `is_root` in `creatree/utils.py` and comes back as a flat root with its leading whitespace baked into the name — so `gen_fixtures.py` generates fixtures for glyph input only, and the indentation semantics are specced fresh in TS-authored fixtures. The parser also validates names as it parses: characters invalid on Windows, reserved device names (`CON`, `NUL`, …), and trailing dots or spaces surface as plain-language entries in `errors[]`, are flagged inline in the editor, and Create stays disabled while any error exists. The repeater `photo-$*4.jpg` expands one line into four, replacing `$` with 1…4; the copy-from-disk operator is deferred to a later phase and joins the contract as an additive field once it has a real grammar.
+
+Every filesystem mutation writes a journal entry first. Undo replays the most recent entry in reverse under three hard rules: it deletes only paths the journal lists as `created`; it never deletes a path recorded as `replaced` (a replaced file cannot be brought back, so Undo leaves it rather than deleting the only remaining copy); and it skips anything modified since creation, reporting what it skipped. Older journal files are pruned automatically — v1 undoes the latest run only.
+
+<Code
+  id="journal-shape"
+  filename="~/Library/Application Support/creatree/journal/2026-07-05-150411.json"
+  language="json"
+  caption="Undo journal — one entry per Create or Rename run."
+  code={`// op: create
+{ "op": "create",
+  "root": "/Users/subhayu/Projects/wedding-shoot",
+  "created": ["raw-photos/", "edited/previews/", "shot-list.docx"],
+  "skipped": ["contracts/"],
+  "replaced": ["invoice.docx"] }
+
+// op: rename — pairs applied deepest-path-first, undone in reverse order
+{ "op": "rename",
+  "root": "/Users/subhayu/Projects/wedding-shoot/raw-photos",
+  "renamed": [["IMG_0001.jpg", "wedding_0001.jpg"],
+              ["IMG_0002.jpg", "wedding_0002.jpg"]] }`}
+/>
+
+### Repository layout
+
+New repo for the app; one addition to the existing Python repo to generate shared fixtures.
+
+<FileTree
+  id="repo-layout"
+  title="creatree-desktop (new repo)"
+  entries={[
+    { path: "packages/parser/src/types.ts", change: "added", note: "Frozen contract (phase 0)" },
+    { path: "packages/parser/src/parse.ts", change: "added", note: "TS port: indentation + tree glyphs, comments, trailing-slash dirs" },
+    { path: "packages/parser/fixtures/", change: "added", note: "Input/output pairs, generated from the Python package" },
+    { path: "packages/parser/test/parity.test.ts", change: "added", note: "TS output must equal Python output on shared semantics" },
+    { path: "src/screens/Create.tsx", change: "added", note: "Editor + live preview + destination + create" },
+    { path: "src/screens/Rename.tsx", change: "added", note: "Find/replace with mandatory preview" },
+    { path: "src/screens/Templates.tsx", change: "added", note: "Saved + starter templates" },
+    { path: "src/components/PreviewTree.tsx", change: "added", note: "Renders ParseResult.roots" },
+    { path: "src-tauri/src/commands/create.rs", change: "added", note: "Plan → fs ops, conflict detection, journal" },
+    { path: "src-tauri/src/commands/rename.rs", change: "added", note: "Scan, preview, apply, journal" },
+    { path: "src-tauri/src/commands/undo.rs", change: "added", note: "Reverse-replay last journal entry" },
+    { path: "src-tauri/src/commands/templates.rs", change: "added", note: "List/save/load template files in app data dir" },
+    { path: "src/components/SettingsPanel.tsx", change: "added", note: "Default folder, updates, API key (phase 4)" },
+    { path: "packages/rename/src/tokens.ts", change: "added", note: "Name tokenizer: literals, numbers, date tokens" },
+    { path: "packages/rename/src/infer.ts", change: "added", note: "Rename-by-example pattern inference" },
+    { path: "packages/rename/test/infer.test.ts", change: "added", note: "Inference fixtures — a wrong suggestion is a regression" },
+    { path: "src/lib/entitlements.ts", change: "added", note: "Single feature gate; beta builds fully unlocked" },
+  ]}
+/>
+
+In the existing `creatree` repo: add `scripts/gen_fixtures.py` (runs `tree_to_dict` over sample inputs and emits the fixture JSON), and real tests — `tests/core.py`, `tests/cli.py`, and `tests/utils.py` are currently 3-line stubs, and the desktop app inherits whatever the Python semantics actually are, so the reference needs its own green suite first.
+
+### Phases
+
+Each phase is a hard gate: tests are written first and must fail, the phase's suite must be green before the next phase starts, and no phase ships UI for a command that is not journaled.
+
+1. **Phase 0 — Contract and parser.** Freeze `types.ts`. Write `gen_fixtures.py` in the Python repo plus real Python tests. Port the parser with `parity.test.ts` red → green. New-in-TS behaviors (plain indentation, repeater `name-$*4.ext`) get their own fixture files, marked as extensions rather than parity cases.
+2. **Phase 1 — Create flow.** App shell with the three tabs. Editor, live `PreviewTree`, destination picker (native dialog), `create_tree` command with conflict detection (skip by default, replace opt-in — net-new behavior: the Python `create_tree` in `creatree/core.py` always skips existing paths), journal, `undo_last`, done-toast with Open folder / Undo. Replace means: files are overwritten and journaled as `replaced`; directories are never deleted — a "replaced" directory just gets its missing children created. The entitlement layer lands here too: every gated feature checks a single `entitlements` module, and beta builds run fully unlocked. This phase alone is a shippable beta.
+3. **Phase 2 — Templates.** Plain-text template files in the app data dir: the file name is the template name and the body is exactly the editor text — nothing else, so templates stay shareable and hand-editable. Starter pack bundled, save-current, use-template loads the editor.
+4. **Phase 3 — Rename, in the first release.** Three tiers, all flowing through the same preview → journal → undo pipeline, built on a pure `packages/rename` module with its own fixture suite:
+   - **Find and replace** — the plain box. Name-only, and the match includes the extension (so `.JPG` → `.jpg` works). Fixed policies: two rows mapping to the same new name are flagged as a collision and auto-unticked, with Apply blocked while a collision is selected; case-only renames go through a two-step temporary name so they work on case-insensitive macOS/Windows volumes; the batch is pre-validated and applied deepest-path-first so folder renames never invalidate child paths; on an unexpected mid-batch error it stops, journals what was done, and offers Undo of the partial run; the folder scan does not follow symlinks.
+   - **Rename by example** — the flagship for non-technical users. Rename any single file in the list; the inference engine in `packages/rename/src/infer.ts` tokenizes sibling names and, when the edit maps to a pattern it recognizes, offers "N more files look like this — rename them the same way?" with a full preview. v1 inference covers literal prefix/suffix changes, case changes, separator swaps (`_` to `-`), and date-token reformatting (`20250412` → `2025-04-12`). When it cannot infer confidently it stays silent rather than guessing — a wrong suggestion in the fixture suite is a regression.
+   - **Advanced panel** — progressive disclosure behind one button: explicit date-format rewriting and sequential numbering ship at launch; regex mode and further dev-oriented tools arrive in a later update inside the same panel. Non-technical users never see any of it unless they open it.
+5. **Phase 4 — AI generate.** The reserved "Ask AI" slot becomes live with a bring-your-own API key, stored in the OS keychain (Tauri keyring plugin), never in a config file. Output lands in the editor as editable text — same create path, nothing new to trust.
+6. **Phase 5 — Distribution.** macOS signing + notarization (Apple Developer Program, $99/year), Windows signing, and auto-update via the Tauri updater — a signed static manifest on the product site, with the updater signing key backed up offline before the first public build, because losing it orphans every installed copy. Landing page with a browser demo reusing `packages/parser`. Licensing goes live here: the public launch is paid from day one through Lemon Squeezy — checkout and key issuing on their side, the app validating keys against their license API with an offline grace period — and the entitlement layer from phase 1 flips from beta-unlocked to license-key-gated. Launch price is provisionally $10 one-time, locked when the checkout is wired.
+
+### Design language
+
+- Copy in plain words: "Tab puts one inside another", never "indent", "parse", "recursive".
+- One window, three tabs; settings behind one gear icon; no menu bar dependence.
+- Every destructive-ish action has a preview and an undo; skip-not-overwrite is the universal default.
+- Empty states teach: the blank editor shows a ghosted example structure.
+- System fonts, native file pickers, follows OS light/dark.
+
+### Risks
+
+<Callout id="risk-parity" tone="risk">
+
+**Parser drift between TS and Python** is the main correctness risk — mitigated by generated fixtures and by treating the Python package as the semantics arbiter for shared behavior. **Undo cannot restore an overwritten file**, which is why Replace is never the default and Undo only deletes journal-listed paths the app created. **Bulk rename touches user files** — it stays gated behind the preview, selected rows only, and the journal.
+
+</Callout>
+
+### Non-goals for v1
+
+No cloud sync, no file-content templating, no app-store distribution, no Linux build, no regex mode at launch (it arrives later inside the Advanced panel), and no image-download organizing yet.
+
+### Verification
+
+- `npm test -w packages/parser` — fixture parity suite green (glyph fixtures regenerated from the Python repo in CI so drift fails the build).
+- `npm test -w packages/rename` — tokenizer and inference fixtures green, including the must-stay-silent cases.
+- `cargo test` in `src-tauri` — create/conflict/undo and rename/undo round-trips against temp directories.
+- End-to-end smoke per release: launch the app, paste the wedding-shoot fixture, create into a fresh temp folder, assert the on-disk tree matches the preview, Undo, assert the folder is back to empty; then a rename run on 40+ generated files with one row unticked, assert the unticked file kept its name after apply and all names restored after Undo; finally a rename-by-example pass — rename one generated file by hand, accept the pattern suggestion, assert every matching file was renamed and Undo restores them all.
+- Manual pass on macOS in light and dark mode with the finished screens against the canvas above.
+
